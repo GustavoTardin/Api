@@ -9,7 +9,7 @@ const user = await User.findOne({
 
     if (!user) return { type: 'nenhum usuário com essas informações', message: 'Invalid fields' };
 
-    const token = generateToken(user.dataValues);
+    const token = generateToken(user);
 
     return { type: null, message: token };
 };
