@@ -24,7 +24,9 @@ const user = await User.findOne({
 
 const getAll = async () => {
     const users = await User.findAll({
-        attributes: ['id', 'displayName', 'email', 'image'],
+        attributes: {
+            exclude: ['password'],
+        },
     });
     return { type: null, message: users };
 };
