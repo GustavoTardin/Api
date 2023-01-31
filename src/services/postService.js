@@ -4,7 +4,7 @@ const insertPost = async () => {
 
 };
 
-const findAll = async (id) => {
+const findByToken = async (id) => {
     const blogs = await BlogPost.findByPk(id, {
         include: [
             {
@@ -26,5 +26,5 @@ const findAll = async (id) => {
 
 module.exports = {
     insertPost,
-    findAll,
+    findByToken,
 };
