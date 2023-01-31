@@ -1,5 +1,3 @@
-const sequelize = require("sequelize");
-
 const UserModel = (sequelize, DataTypes) => {
     const User = sequelize.define('User', {
         id: { type: DataTypes.INTEGER, primaryKey: true, allowNull: false, autoIncrement: true, },
@@ -8,7 +6,13 @@ const UserModel = (sequelize, DataTypes) => {
         password: DataTypes.STRING,
         image: DataTypes.STRING,
     }, { underscored: true, timestamps: false });
-    return User;
+
+    User.associate = ({BlogPost}) => {
+        User.hasMany(BlogPost,
+            { foreignKey: 'id', as: 'BlogPost' },
+            );
+        };
+        return User;
 }
 
 module.exports = UserModel;
