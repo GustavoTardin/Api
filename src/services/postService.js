@@ -21,7 +21,8 @@ const findByToken = async (id) => {
             },
         ],
     });
-    return blogs;
+    if (!blogs) return { type: 404, message: 'Post does not exist' };
+    return { type: null, message: blogs };
 };
 
 module.exports = {
