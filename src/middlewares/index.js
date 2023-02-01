@@ -3,6 +3,7 @@ const validateDisplayName = require('./validateDisplayName');
 const validateEmailAndPassword = require('./validateEmailAndPassword');
 const validateTitleAndContent = require('./validateTitleAndContent');
 const validateToken = require('./validateToken');
+const validateInsertNewPost = require('./validateInsertNewPost');
 
 module.exports = {
     validateLogin,
@@ -10,4 +11,5 @@ module.exports = {
     validateDisplayName,
     validateTitleAndContent,
     validateToken,
+    validateInsertNewPost,
 };

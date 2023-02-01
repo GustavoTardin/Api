@@ -1,7 +1,12 @@
 const { blogPost } = require('../services');
 
-const insertPost = async (_req, _res) => {
+const insertPost = async (req, res) => {
+    const { title, content, categoryIds } = req.body;
+    const { id } = req.user;
 
+    const { type, message } = await blogPost.insertPost(title, content, categoryIds, id);
+    if (type) return res.status(type).json({ message });
+    return res.status(201).json(message);
 };
 
 const findByToken = async (req, res) => {

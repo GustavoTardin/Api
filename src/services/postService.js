@@ -1,7 +1,22 @@
- const { BlogPost, Category, User } = require('../models');
+ const { BlogPost, Category, User, PostCategory } = require('../models');
+const validateCategoryIds = require('./validations/validateCategoryIds');
 
-const insertPost = async () => {
+const insertPost = async (title, content, categoryIds, id) => {
+    if (await validateCategoryIds(categoryIds) === false) {
+        return { type: 400, message: 'one or more "categoryIds" not found' };
+    }
+    const result = await BlogPost.create({
+         title, content, userId: id, 
+    });
 
+const insertPostCategories = await categoryIds.map((e) => ({
+    postId: result.id,
+    categoryId: e,
+}));
+
+await PostCategory.bulkCreate(insertPostCategories);
+
+   return { type: null, message: result };
 };
 
 const findByToken = async (id) => {
