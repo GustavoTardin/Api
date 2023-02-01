@@ -40,10 +40,16 @@ const findByToken = async (id) => {
     return { type: null, message: blogs };
 };
 
-const updateById = async ({ idParams, idUser, body }) => {
+const checkBlogOwner = async (idParams, idUser) => {
     const { type, message } = await findByToken(idParams);
     if (type) return { type, message };
     if (message.userId !== idUser) return { type: 401, message: 'Unauthorized user' };
+    return { type: null, message: 'Id Checks!!' };
+};
+
+const updateById = async ({ idParams, idUser, body }) => {
+    const { type, message } = await checkBlogOwner(idParams, idUser);
+    if (type) return { type, message };
     await BlogPost.update(
     { title: body.title, content: body.content },
     { where: { id: idParams } },
@@ -52,8 +58,17 @@ const updateById = async ({ idParams, idUser, body }) => {
     return { type: null, message: updatedBlog.message };
 };
 
+const deleteById = async (idParams, idUser) => {
+    const { type, message } = await checkBlogOwner(idParams, idUser);
+    if (type) return { type, message };
+
+   await BlogPost.destroy({ where: { id: idParams } });
+    return { type: null, message: '' };
+};
+
 module.exports = {
     insertPost,
     findByToken,
     updateById,
+    deleteById,
 };
