@@ -1,4 +1,5 @@
- const { BlogPost, Category, User, PostCategory } = require('../models');
+ const { Op } = require('sequelize');
+const { BlogPost, Category, User, PostCategory } = require('../models');
 const validateCategoryIds = require('./validations/validateCategoryIds');
 
 const insertPost = async (title, content, categoryIds, id) => {
@@ -66,9 +67,32 @@ const deleteById = async (idParams, idUser) => {
     return { type: null, message: '' };
 };
 
+const getPostBySearch = async (q) => {
+    const postsByTitle = await BlogPost.findAll({
+        where: { title: { [Op.like]: `%${q}%` } },
+        include: [{ model: User, as: 'user' }, {
+            model: Category,
+            as: 'categories',
+        }],
+    });
+    const postsByContent = await BlogPost.findAll({
+        where: { content: { [Op.like]: `%${q}%` } },
+        include: [{ model: User, as: 'user', attributes: { exclude: ['password'] } }, {
+            model: Category,
+            as: 'categories',
+
+        }],
+    });
+    if (postsByTitle.length > 0) {
+        return { type: null, message: postsByTitle };
+    }
+    return { type: null, message: postsByContent };
+};
+
 module.exports = {
     insertPost,
     findByToken,
     updateById,
     deleteById,
+    getPostBySearch,
 };
