@@ -22,9 +22,17 @@ const getById = async (req, res) => {
 
     res.status(200).json(message);
 };
+const deleteByToken = async (req, res) => {
+    const { id } = req.user;
+
+    const { type, message } = await userService.deleteByToken(id);
+    if (type) return res.status(type).json({ message });
+    return res.status(204).send();
+};
 
 module.exports = {
     insertUser,
     getAll,
     getById,
+    deleteByToken,
 };

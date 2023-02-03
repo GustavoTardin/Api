@@ -42,8 +42,16 @@ const getById = async (id) => {
     return { type: null, message: user };
 };
 
+const deleteByToken = async (id) => {
+    const rowAffected = await User.destroy({ where: { id } });
+
+    if (!rowAffected) return { type: 404, message: 'invalid user' };
+    return { type: null, message: rowAffected };
+};
+
 module.exports = {
     insertUser,
     getAll,
     getById,
+    deleteByToken,
 };
