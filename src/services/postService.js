@@ -67,16 +67,16 @@ const deleteById = async (idParams, idUser) => {
     return { type: null, message: '' };
 };
 
-const getPostBySearch = async (q) => {
+const getPostBySearch = async (searchTerm) => {
     const postsByTitle = await BlogPost.findAll({
-        where: { title: { [Op.like]: `%${q}%` } },
+        where: { title: { [Op.like]: `%${searchTerm}%` } },
         include: [{ model: User, as: 'user' }, {
             model: Category,
             as: 'categories',
         }],
     });
     const postsByContent = await BlogPost.findAll({
-        where: { content: { [Op.like]: `%${q}%` } },
+        where: { content: { [Op.like]: `%${searchTerm}%` } },
         include: [{ model: User, as: 'user', attributes: { exclude: ['password'] } }, {
             model: Category,
             as: 'categories',
