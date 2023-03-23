@@ -10,7 +10,7 @@ const insertPost = async (title, content, categoryIds, id) => {
          title, content, userId: id, 
     });
 
-const insertPostCategories = await categoryIds.map((e) => ({
+const insertPostCategories = categoryIds.map((e) => ({
     postId: result.id,
     categoryId: e,
 }));
